@@ -4,7 +4,7 @@ Völlmin
 
 | Datum | Version | Zusammenfassung                                              |
 | ----- | ------- | ------------------------------------------------------------ |
-| 09-01.2023 | 0.0.1   | Vorarbeit Dokumentation bis und mit Aufgabe 4 |
+| 09.01.2023 | 0.0.1   | Vorarbeit Dokumentation bis und mit Aufgabe 4 |
 |       | 0.0.2   |                                                              |
 |       | 0.0.3   |                                                              |
 |       | 0.0.4   |                                                              |
