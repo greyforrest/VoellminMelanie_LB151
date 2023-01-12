@@ -49,9 +49,10 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 9 | Muss | Funktional | Als Kandidat*/in möchte ich Wörter und Phrasen nur einmal spielen, damit das Spiel spannend gehalten wird.|
 | 10 | Muss | Funktional | Als Kandidat*/in möchte ich jeder Zeit aufhören und meinen Geldbetrag in die Highscore-Liste eintragen können, damit ich einen guten Highscore erzielen kann. |
 | 11 | Muss | Funktional | Als Kandidat*/in möchte ich beim Aufhören wissen, wie viele Runden ich gespielt habe, damit ich das Verhältnis meines Geldbetrages mit den gespielten Runden mit den anderen Spieler in der Highscore-Liste vergleichen kann. |
-| 12 | Muss | Rand | Als Entwickler möchte ich, dass einfache Textfelder sowohl client- als auch serverseitig geprüft werden, damit der Benutzer keinen Einfluss auf die Validierung haben kann. |
-| 13 | Muss | Rand | Als Entwickler möchte ich die Applikation so sicher wie möglich halten, damit meine Datenbank schützen und meinen Benutzern eine tolle Erfahrung bieten kann. |
+| 12 | Muss | Rand | Als Auftraggeber möchte ich, dass einfache Textfelder sowohl client- als auch serverseitig geprüft werden, damit der Benutzer keinen Einfluss auf die Validierung haben kann. |
+| 13 | Muss | Rand | Als Auftraggeber möchte ich, dass die Applikation so sicher wie möglich ist, damit ich meine Daten schützen und meinen Benutzern eine tolle Erfahrung bieten kann. |
 | A | Kann | Qualität | Als Kandidat*/in möchte ich die Rangliste zu jedem Zeitpunkt herunterladen können, damit ich meinen Rang dieses Moments für immer behalten kann. |
+| B | Muss | Rand | Als Entwickler möchte ich diese Webapplikation mit Blazor umsetzen, damit ich auch neuere Webframeworks kennenlerne. |
 
 # 4.2 Testfälle
 
