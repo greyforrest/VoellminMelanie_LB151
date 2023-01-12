@@ -5,12 +5,12 @@ Völlmin
 | Datum | Version | Zusammenfassung                                              |
 | ----- | ------- | ------------------------------------------------------------ |
 | 09.01.2023 | 0.0.1   | Vorarbeit Dokumentation bis und mit Aufgabe 4 |
-|       | 0.0.2   |                                                              |
-|       | 0.0.3   |                                                              |
-|       | 0.0.4   |                                                              |
-|       | 0.0.5   |                                                              |
-|       | 0.0.6   |                                                              |
-|       | 1.0.0   |                                                              |
+| 12.01.2023 | 0.0.2   | GUI Design  (Aufgabe 5) |
+| | 0.0.3   | |
+| | 0.0.4   | |
+| | 0.0.5   | |
+| | 0.0.6   | |
+| | 1.0.0   | |
 
 # 0 Ihr Projekt
 
@@ -81,7 +81,11 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 # 5 Prototyp
 
-✍️ Erstellen Sie Prototypen für das GUI (Admin-Interface und Quiz-Seite).
+![Design Spielseite](https://user-images.githubusercontent.com/69569613/212004119-1d4f64f6-71b5-46d7-9a41-e18e5e8c6541.png)
+
+![Design Adminseite und Datenverwaltung](https://user-images.githubusercontent.com/69569613/212004220-323a1a46-76ed-470c-bb65-55cfac574b3c.png)
+
+
 
 # 6 Implementation
 
