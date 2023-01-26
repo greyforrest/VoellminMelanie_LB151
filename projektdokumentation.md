@@ -6,7 +6,7 @@ Völlmin
 | ----- | ------- | ------------------------------------------------------------ |
 | 09.01.2023 | 0.0.1   | Vorarbeit Dokumentation bis und mit Aufgabe 4 |
 | 12.01.2023 | 0.0.2   | GUI Design  (Aufgabe 5) |
-| | 0.0.3   | |
+| 26.01.2023 | 0.0.3   | Erste Version erstellt (Funktionalität etwa 70%) |
 | | 0.0.4   | |
 | | 0.0.5   | |
 | | 0.0.6   | |
@@ -94,7 +94,9 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 | User Story | Datum | Beschreibung |
 | ---------- | ----- | ------------ |
-| ...        |       |              |
+| 5 | 26.01.2023 | Name kann eingegeben werden, wird noch nicht für die Highscoreliste gespeichert |
+| 6 | 26.01.2023 | Lebenspunkte und Kontostand sichtbar, Lebenspunkte verändern sich, Kontostand noch nicht |
+| 7 | 26.01.2023 | Feedback auf Eingabe wird gegeben, nicht sehr präzisiert und auch nicht sehr hilfreich, da die Buchstaben nicht eingesetzt werden |
 
 # 7 Projektdokumentation
 
