@@ -1,0 +1,61 @@
+﻿@page "/"
+
+@if(name != null){
+    <p>Kontostand: @kontostand</p><br />
+    <p>Lebenspunkte: @leben / 3</p><br />
+    <p>
+        @foreach(var letter in wort.ToCharArray()){
+            <span> _ </span>
+        }
+    </p>
+    <p>Raten:</p>
+    <input type="text" @bind="@userGuess" />
+    <button onclick="@guess">Raten</button><br />
+    <p>@isGuessCorrect</p>
+    
+} else {
+    <h1>Geben Sie einen Namen an, um zu spielen</h1>
+    <form>
+        <input type="text" @bind="@name" /><br />
+        <button>Spielen</button>
+    </form>
+}
+
+
+@code {
+    private string name;
+    private string userGuess;
+    private int kontostand = 100;
+    private int leben = 3;
+    private string wort = "Giraffe";
+    private string isGuessCorrect = "";
+
+    private void guess()
+    {
+        if(userGuess.Length > 1)
+        {
+            if(userGuess.ToLower() == wort.ToLower())
+            {
+                isGuessCorrect = "Korrekt geraten!";
+            } else
+            {
+                isGuessCorrect = "Nope";
+                leben -= 1;
+            }
+
+        } else if (userGuess.Length == 1)
+        {
+            if (wort.Contains(userGuess.ToCharArray()[0]))
+            {
+                isGuessCorrect = "Buchstabe enthalten";
+            } else
+            {
+                isGuessCorrect = "Nope";
+                leben -= 1;
+            }
+        } else
+        {
+            isGuessCorrect = "Rateversuch ungültig";
+        }
+    }
+}

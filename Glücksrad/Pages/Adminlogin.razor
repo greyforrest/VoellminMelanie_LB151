@@ -1,0 +1,23 @@
+﻿@page "/adminlogin"
+@using Glücksrad.Data
+
+<h1>Adminlogin</h1>
+
+<form>
+    <label>Benutzername</label><br />
+    <input type="text" @bind="@benutzername" /><br />
+    <label>Passwort</label><br />
+    <input type="text" @bind="@passwort" /><br />
+    <button onclick="@anmelden">Anmelden</button>
+</form>
+
+
+@code {
+    private string benutzername;
+    private string passwort;
+
+    private void anmelden()
+    {
+         
+    }
+}
