@@ -1,61 +1,170 @@
 ﻿@page "/"
+@using Glücksrad.Data;
+@inject FirebaseService firebase
 
-@if(name != null){
-    <p>Kontostand: @kontostand</p><br />
-    <p>Lebenspunkte: @leben / 3</p><br />
-    <p>
-        @foreach(var letter in wort.ToCharArray()){
-            <span> _ </span>
-        }
-    </p>
-    <p>Raten:</p>
-    <input type="text" @bind="@userGuess" />
-    <button onclick="@guess">Raten</button><br />
+@if(player != null){
+    <div class="row">
+        <div class="col">Spieler: @player.getName()</div>
+        <div class="col">Runde: @player.getRunden()</div>
+        <div class="col">Kontostand: @player.getKontostand()</div>
+        <div class="col">Lebenspunkte: @player.getLebenspunkte() / 3</div>
+    </div>
+    <div class="row">
+        <div class="col-9"></div>
+        <div class="col text-right">
+            <button class="btn btn-dark" onclick="@stop">Spiel beenden</button><br />
+
+        </div>
+    </div>
+    <div id="guess-lines">
+        <p>
+            @foreach (char letter in aktuellesWort.ToCharArray())
+            {
+                if (lettersKnown.Contains(Char.ToLower(letter)))
+                {
+                    <span> @letter </span>
+                }
+                else
+                {
+                    <span> _ </span>
+                }
+            }
+        </p>
+    </div>
+
+    <p>Kategorie: @aktuelleKategorie</p>
+    <input placeholder="Buchstabe oder Wort raten" type="text" @bind="@userGuess"  />
+    <button class="btn btn-dark" onclick="@guess">Raten</button><br />
     <p>@isGuessCorrect</p>
     
 } else {
-    <h1>Geben Sie einen Namen an, um zu spielen</h1>
-    <form>
+    <div class="col mt-5 text-center">
+        <h1>Geben Sie einen Namen an, um zu spielen</h1>
         <input type="text" @bind="@name" /><br />
-        <button>Spielen</button>
-    </form>
+        <button class="btn btn-dark mt-3" onclick="@start">Spielen</button>
+    </div>
 }
 
 
 @code {
-    private string name;
+    private string name = null;
+    private Player player = null;
     private string userGuess;
-    private int kontostand = 100;
-    private int leben = 3;
-    private string wort = "Giraffe";
+    //private List<KeyValuePair<string, Phrase>> phrases;
+    private string aktuellesWort = "Thermometerhuhn";
+    private string aktuelleKategorie = "Tiere und Pflanzen";
     private string isGuessCorrect = "";
+    private List<char> lettersKnown = new List<char>();
+
+    /*protected async override void OnInitialized()
+    {
+    phrases = await firebase.getAllWords();
+
+    while (true)
+    {
+    int randWortindex = new Random().Next(phrases.Count);
+    Phrase aktuell = phrases.ElementAt(randWortindex).Value;
+    if (player.addWord(aktuell.word))
+        {
+        aktuellesWort = aktuell.word;
+        aktuelleKategorie = await firebase.getCategoryById(int.Parse(aktuell.category));
+    break;
+    }
+    }
+
+    }*/
 
     private void guess()
     {
         if(userGuess.Length > 1)
         {
-            if(userGuess.ToLower() == wort.ToLower())
+            if(userGuess.ToLower() == aktuellesWort.ToLower())
             {
                 isGuessCorrect = "Korrekt geraten!";
+                foreach (char letter in aktuellesWort)
+                {
+                    lettersKnown.Add(letter);
+                }
+
             } else
             {
-                isGuessCorrect = "Nope";
-                leben -= 1;
+                bool alive = player.removeLebenspunkt();
+                if (!alive)
+                {
+                    gameLost();
+                }
             }
 
         } else if (userGuess.Length == 1)
         {
-            if (wort.Contains(userGuess.ToCharArray()[0]))
+            if (aktuellesWort.ToLower().Contains(userGuess.ToLower().ToCharArray()[0]))
             {
-                isGuessCorrect = "Buchstabe enthalten";
+                lettersKnown.Add(userGuess.ToCharArray()[0]);
+                if (wordFull())
+                {
+                    isGuessCorrect = "Wort erraten! Glückwunsch";
+                }
+
             } else
             {
-                isGuessCorrect = "Nope";
-                leben -= 1;
+                bool alive = player.removeLebenspunkt();
+                if (!alive)
+                {
+                    gameLost();
+                }
             }
         } else
         {
             isGuessCorrect = "Rateversuch ungültig";
         }
+    }
+
+    private void gameLost()
+    {
+        player.changeKontostand(0);
+        isGuessCorrect = "Spiel verloren";
+    }
+
+    private void gameWon()
+    {
+        player.increaseRunden();
+        //neues Wort auswählen
+        isGuessCorrect = "";
+        lettersKnown = new List<char>();
+    }
+
+    private bool playerNotNull()
+    {
+        if(name != null && name.Length >= 2)
+        {
+            player = new Player(name);
+            return true;
+        }
+        return false;
+    }
+
+    private bool wordFull()
+    {
+        foreach(char letter in aktuellesWort)
+        {
+            if (!lettersKnown.Contains(Char.ToLower(letter)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void start()
+    {
+        if(name != null && name.Length >= 2)
+        {
+            player = new Player(name);
+        }
+    }
+
+    public void stop()
+    {
+        firebase.addHighscore(player);
     }
 }
