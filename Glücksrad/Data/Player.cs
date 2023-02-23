@@ -3,27 +3,31 @@
     public class Player
     {
 
-        private string name;
-        private int kontostand;
-        private int lebenspunkte;
-        private List<string> bereitsGespielteWörter = new List<string>();
-        private int runden;
+        public string name { get; set; }
+        public int kontostand { get; set; }
+        public int lebenspunkte { get; set; }
+        public List<string> bereitsGespielteWörter { get; set; }
+        public int runden { get; set; }
 
+
+        public Player() { }
         public Player(string name)
         {
             this.name = name;
             kontostand = 0;
             lebenspunkte = 3;
-            runden = 1;
+            runden = 0;
+            bereitsGespielteWörter = new List<string>();
         }
 
         //Gibt *false* zurück, wenn das Wort bereits in der Liste ist, ansonst wird das Wort hinzugefügt und returned true
         public bool addWord(string word)
         {
-            if(bereitsGespielteWörter.Contains(word))
+            if (bereitsGespielteWörter.Contains(word))
             {
                 return false;
-            } else
+            }
+            else
             {
                 bereitsGespielteWörter.Add(word);
                 return true;
@@ -40,36 +44,23 @@
             kontostand += number;
         }
 
+        public void emptyKontostand()
+        {
+            kontostand = 0;
+        }
+
         //Zieht ein Lebenspunkt ab und gibt dann aus, ob der Spieler noch lebt (true/false)
         public bool removeLebenspunkt()
         {
             lebenspunkte -= 1;
-            if(lebenspunkte > 0)
+            if (lebenspunkte > 0)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
-        }
-
-        public string getName()
-        {
-            return name;
-        }
-
-        public int getKontostand() {
-            return kontostand;
-        }
-
-        public int getRunden()
-        {
-            return runden;
-        }
-
-        public int getLebenspunkte()
-        {
-            return lebenspunkte;
         }
 
     }

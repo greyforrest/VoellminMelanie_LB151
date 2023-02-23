@@ -1,29 +1,44 @@
 ﻿@page "/highscores"
+@using Glücksrad.Data
+@inject FirebaseService firebase
 
-<PageTitle>Counter</PageTitle>
 
 <h1>Highscores</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-        </tr>
-    </thead>
-    <tbody>
+@if(allHighscores != null)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
+                <th>Spieler</th>
+                <th>Kontostand</th>
+                <th>Runden</th>
             </tr>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (Player highscore in allHighscores)
+            {
+                    <tr>
+                        <td>@highscore.name</td>
+                        <td>@highscore.kontostand</td>
+                        <td>@highscore.runden</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+} else
+{
+    <p>Loading scores...</p>
+}
+
 
 
 @code {
+    List<Player> allHighscores;
 
+    protected async override void OnInitialized()
+    {
+        allHighscores = await firebase.getAllHighscores();
+        allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
+        StateHasChanged();
+    }
 }

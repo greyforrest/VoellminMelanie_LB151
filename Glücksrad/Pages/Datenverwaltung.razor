@@ -1,5 +1,75 @@
 ﻿@page "/datenverwaltung"
+@inject NavigationManager navman;
+@if(loggedIn)
+{
+    <div class="row ">
+        <div class="col-10">
+            <h1>Phrasen</h1>
+        </div>
+    </div>
+    <div class="übersicht">
+        <div class="row border-bottom">
+            <div class="col-10">Wort</div>
+            <div class="col-1"><button class="btn btn-info">edit</button></div>
+            <div class="col-1"><button class="btn btn-danger">delete</button></div>
+        </div>
+    </div>
+    <div class="row">
+        <input type="text" @bind="@newWord" placeholder="Neues Wort" class="form-control"/>
+        <input type="text" @bind="@categoryForNewWord" placeholder="Kategorie für Wort" class="form-control"/>
+        <button class="btn btn-success" onclick="@addWord">+</button>
+    </div>
+
+    <div class="row">
+        <div class="col-10">
+            <h1>Kategorien</h1>
+        </div>
+        <div class="col-2"><button class="btn btn-success">+</button></div>
+    </div>
+
+    <div class=" übersicht">
+        <div class="row border-bottom">
+            <div class="col-10">Kategorie</div>
+        </div>
+    </div>
+    <div class="row">
+        <input type="text" @bind="@newCategory" placeholder="Neue Kategorie" class="form-control" />
+        <button class="btn btn-success" onclick="@addCategory">+</button>
+    </div>
+}
+else
+{
+    <form class="container" id="admin-login">
+        <h1>Adminlogin</h1>
+        <input type="text" class="form-control" placeholder="Benutzername" @bind="@benutzername" /><br />
+        <input type="text" class="form-control" placeholder="Passwort" @bind="@passwort" /><br />
+        <button onclick="@anmelden" class="btn btn-dark">Anmelden</button>
+    </form>
+}
+
+
 
 @code {
+    private string benutzername;
+    private string passwort;
+    private bool loggedIn;
 
+    private string newWord { get; set; }
+    private string categoryForNewWord { get; set;  }
+    private string newCategory {get; set; }
+
+    private void anmelden()
+    {
+        loggedIn = true;
+    }
+
+    private void addWord()
+    {
+        //wort in datenbank eintragen
+    }
+
+        private void addCategory()
+    {
+        //wort in datenbank eintragen
+    }
 }
