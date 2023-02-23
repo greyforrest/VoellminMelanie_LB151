@@ -7,7 +7,7 @@ Völlmin
 | 09.01.2023 | 0.0.1   | Vorarbeit Dokumentation bis und mit Aufgabe 4 |
 | 12.01.2023 | 0.0.2   | GUI Design  (Aufgabe 5) |
 | 26.01.2023 | 0.0.3   | Erste Version erstellt (Funktionalität etwa 70%) |
-| | 0.0.4   | |
+| 17.02.2023 | 0.0.4   | Design und Logikupdates, Probleme mit Firebase |
 | | 0.0.5   | |
 | | 0.0.6   | |
 | | 1.0.0   | |
@@ -97,6 +97,9 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 5 | 26.01.2023 | Name kann eingegeben werden, wird noch nicht für die Highscoreliste gespeichert |
 | 6 | 26.01.2023 | Lebenspunkte und Kontostand sichtbar, Lebenspunkte verändern sich, Kontostand noch nicht |
 | 7 | 26.01.2023 | Feedback auf Eingabe wird gegeben, nicht sehr präzisiert und auch nicht sehr hilfreich, da die Buchstaben nicht eingesetzt werden |
+| 7 | 17.02.2023 | Richtig geratenen Buchstaben werden eingesetzt |
+| 9 | 17.02.2023 | Gespielte Wörter können im Spieler gespeichert werden, inklusive Feedback, ob das Wort schon mal gespielt wurde oder nicht |
+| 10 | 17.02.2023 | Button "Spiel beenden" ist zu sehen und sollte die aktuellen Werte in Firebase speichern, wird jedoch noch nicht übertragen |
 
 # 7 Projektdokumentation
 
