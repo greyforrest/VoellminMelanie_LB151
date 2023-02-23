@@ -90,8 +90,8 @@ else
     private Player player = null;
     private string userGuess;
     private List<Phrase> phrases;
-    private string aktuellesWort = "Thermometerhuhn";
-    private string aktuelleKategorie = "Tiere und Pflanzen";
+    private string aktuellesWort;
+    private String aktuelleKategorie;
     private string isGuessCorrect = "";
     private List<char> lettersKnown = new List<char>() {'.', '!', '?', ' '};
     private int geldfaktor = 0;
@@ -131,9 +131,9 @@ else
         {
             if (!userGuess.Contains("a") && !userGuess.Contains("A") && !userGuess.Contains("e") && !userGuess.Contains("E") && !userGuess.Contains("i") && !userGuess.Contains("I") && !userGuess.Contains("o") && !userGuess.Contains("O") && !userGuess.Contains("u") && !userGuess.Contains("U"))
             {
-                if(userGuess == " ")
+                if(lettersKnown.Contains(userGuess.ToLower().ToCharArray()[0]))
                 {
-                    isGuessCorrect = "Diese sind bereits gegeben.";
+                    isGuessCorrect = "Bereits geraten...";
                 } else if (aktuellesWort.ToLower().Contains(userGuess.ToLower().ToCharArray()[0]))
                 {
                     lettersKnown.Add(userGuess.ToCharArray()[0]);
@@ -201,12 +201,20 @@ else
 
     private void gameLost()
     {
+        foreach (char letter in aktuellesWort)
+        {
+            lettersKnown.Add(letter);
+        }
         player.emptyKontostand();
         isGuessCorrect = "Spiel verloren";
+        name = "";
+        Thread.Sleep(2000);
+        stop();
     }
 
     private void gameWon()
     {
+        Thread.Sleep(1000);
         isGuessCorrect = "";
         wheelSpun = false;
         glücksradresultat = "";
