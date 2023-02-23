@@ -8,7 +8,7 @@ Völlmin
 | 12.01.2023 | 0.0.2   | GUI Design  (Aufgabe 5) |
 | 26.01.2023 | 0.0.3   | Erste Version erstellt (Funktionalität etwa 70%) |
 | 17.02.2023 | 0.0.4   | Design und Logikupdates, Probleme mit Firebase |
-| | 0.0.5   | |
+| 23.02.2023 | 0.0.5   | Funktionalität circa 95%, Adminlogin fehlt |
 | | 0.0.6   | |
 | | 1.0.0   | |
 
@@ -100,6 +100,11 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 7 | 17.02.2023 | Richtig geratenen Buchstaben werden eingesetzt |
 | 9 | 17.02.2023 | Gespielte Wörter können im Spieler gespeichert werden, inklusive Feedback, ob das Wort schon mal gespielt wurde oder nicht |
 | 10 | 17.02.2023 | Button "Spiel beenden" ist zu sehen und sollte die aktuellen Werte in Firebase speichern, wird jedoch noch nicht übertragen |
+| 5 | 23.02.2023 | Name kann eingegeben werden, wird für die Highscoreliste verwendet |
+| 6 | 23.02.2023 | Lebenspunkte und Kontostand sichtbar, Lebenspunkte verändern sich, Kontostand verändert sich ebenfalls |
+| 8 | 23.02.2023 | Rangliste ist nach Geldbeträgen sortiert |
+| 10 | 23.02.2023 | Button "Spiel beenden" ist zu sehen und speichert aktuellen Stand in der Datenbank, Spiel wird beendet |
+| 11 | 23.02.2023 | Anzahl gespielte Runden werden in der Highscoreliste angezeigt |
 
 # 7 Projektdokumentation
 
