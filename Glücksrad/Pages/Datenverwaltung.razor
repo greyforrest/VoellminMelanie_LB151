@@ -1,48 +1,106 @@
 ﻿@page "/datenverwaltung"
-@inject NavigationManager navman;
-@if(loggedIn)
+@using Glücksrad.Data
+@inject NavigationManager navman
+@inject FirebaseService firebase
+
+@if (firebase.isLoggedIn)
 {
-    <div class="row ">
+    <div class="row text-right">
+        <div class="col-10"></div>
+        <div class="col-2">
+            <button class="btn btn-danger" onclick="@abmelden">Abmelden</button>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-10">
             <h1>Phrasen</h1>
         </div>
     </div>
-    <div class="übersicht">
-        <div class="row border-bottom">
-            <div class="col-10">Wort</div>
-            <div class="col-1"><button class="btn btn-info">edit</button></div>
-            <div class="col-1"><button class="btn btn-danger">delete</button></div>
+    <Popup @ref="editpopup"/>
+    @if (allWords != null)
+    {
+        <div class="übersicht">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Phrase</th>
+                        <th>Kategory</th>
+                        <th>Löschen</th>
+                        <th>Bearbeiten</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Phrase phrase in allWords)
+                    {
+                        <tr>
+                            <td>@phrase.word</td>
+                            <td>@phrase.category</td>
+                            <td><button class="btn btn-danger" @onclick="() => deletePhrase(phrase)">x</button></td>
+                            <td><button class="btn btn-success" @onclick="() => editPhrase(phrase)">edit</button></td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>Loading words...</p>
+    }
+
+    <div class="row my-5">
+        <div class="col">
+            <input type="text" @bind="@newWord" placeholder="Neues Wort" class="form-control" />
+        </div>
+        <div class="col">
+            <input type="text" @bind="@categoryForNewWord" placeholder="Kategorie für Wort" class="form-control" />
+        </div>
+        <div class="col">
+            <button class="btn btn-success" onclick="@addWord">+</button>
         </div>
     </div>
-    <div class="row">
-        <input type="text" @bind="@newWord" placeholder="Neues Wort" class="form-control"/>
-        <input type="text" @bind="@categoryForNewWord" placeholder="Kategorie für Wort" class="form-control"/>
-        <button class="btn btn-success" onclick="@addWord">+</button>
-    </div>
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-10">
-            <h1>Kategorien</h1>
-        </div>
-        <div class="col-2"><button class="btn btn-success">+</button></div>
-    </div>
-
-    <div class=" übersicht">
-        <div class="row border-bottom">
-            <div class="col-10">Kategorie</div>
+            <h1>Highscores</h1>
         </div>
     </div>
-    <div class="row">
-        <input type="text" @bind="@newCategory" placeholder="Neue Kategorie" class="form-control" />
-        <button class="btn btn-success" onclick="@addCategory">+</button>
-    </div>
+    @if (allHighscores != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Spieler</th>
+                    <th>Kontostand</th>
+                    <th>Runden</th>
+                    <th>Löschen</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Player highscore in allHighscores)
+                {
+                    <tr>
+                        <td>@highscore.name</td>
+                        <td>@highscore.kontostand</td>
+                        <td>@highscore.runden</td>
+                        <td><button class="btn btn-danger" @onclick="() => deleteHighscore(highscore)">x</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Loading scores...</p>
+    }
 }
 else
 {
     <form class="container" id="admin-login">
         <h1>Adminlogin</h1>
         <input type="text" class="form-control" placeholder="Benutzername" @bind="@benutzername" /><br />
-        <input type="text" class="form-control" placeholder="Passwort" @bind="@passwort" /><br />
+        <input type="password" class="form-control" placeholder="Passwort" @bind="@passwort" /><br />
         <button onclick="@anmelden" class="btn btn-dark">Anmelden</button>
     </form>
 }
@@ -50,26 +108,81 @@ else
 
 
 @code {
-    private string benutzername;
-    private string passwort;
+    string editedWord = "";
+    string editedCategory = "";
+    List<Player> allHighscores;
+    List<Phrase> allWords;
+    Popup editpopup;
+
+    private string benutzername = "";
+    private string passwort = "";
     private bool loggedIn;
 
     private string newWord { get; set; }
-    private string categoryForNewWord { get; set;  }
-    private string newCategory {get; set; }
+    private string categoryForNewWord { get; set; }
+    private string newCategory { get; set; }
 
-    private void anmelden()
+    private async void anmelden()
     {
-        loggedIn = true;
+        if(await firebase.checkLogin(benutzername, passwort))
+        {
+            firebase.isLoggedIn = true;
+
+        }
     }
 
-    private void addWord()
+    private void abmelden()
     {
-        //wort in datenbank eintragen
+        firebase.isLoggedIn = false;
     }
 
-        private void addCategory()
+    private async void addWord()
     {
-        //wort in datenbank eintragen
+        firebase.addPhrase(new Phrase(categoryForNewWord, newWord));
+        refresh();
     }
+
+    protected async override void OnInitialized()
+    {
+        allHighscores = await firebase.getAllHighscores();
+        allWords = await firebase.getAllWords();
+        allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
+        StateHasChanged();
+    }
+
+    private async void deleteHighscore(Player highscore)
+    {
+        if (highscore.databaseId != null)
+        {
+            firebase.deletePlayer(highscore);
+
+        }
+        else
+        {
+            //error
+        }
+        refresh();
+    }
+
+    private async void deletePhrase(Phrase phrase)
+    {
+        firebase.deletePhrase(phrase);
+        refresh();
+    }
+
+    private async void editPhrase(Phrase phrase)
+    {
+        editpopup.Show(phrase, this);
+
+    }
+
+    public async void refresh()
+    {
+        allWords = await firebase.getAllWords();
+        allHighscores = await firebase.getAllHighscores();
+        allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
+        StateHasChanged();
+    }
+
+
 }

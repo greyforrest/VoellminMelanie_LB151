@@ -1,0 +1,60 @@
+﻿@using Glücksrad.Data
+@using Glücksrad.Pages
+@inject FirebaseService firebase
+
+@{
+    var showClass = IsVisible ? "d-block" : "d-none";
+}
+
+<div class="toast-container p-3 @showClass" data-bs-autohide="true" data-bs-delay="5000">
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Wort bearbeiten</strong>
+            <button type="button" class="btn-close" @onclick="Close"></button>
+        </div>
+
+        <div class="toast-body">
+            <input type="text" class="form-control" @bind="@editedWord" placeholder="Editiertes Wort"/><br />
+            <input type="text" class="form-control" @bind="@editedCategory" placeholder="Editierte Kategory" /><br />
+            <button class="btn btn-success" onclick="@Save">Speichern</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    string editedWord = "";
+    string editedCategory = "";
+    Phrase phraseToEdit;
+    Datenverwaltung datenverwaltung;
+
+    public void Show(Phrase phraseToEdit, Datenverwaltung datenverwaltung)
+    {
+        IsVisible = true;
+        this.phraseToEdit = phraseToEdit;
+        editedWord = phraseToEdit.word;
+        editedCategory = phraseToEdit.category;
+        this.datenverwaltung = datenverwaltung;
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        IsVisible = false;
+        StateHasChanged();
+    }
+
+    private void Save()
+    {
+        IsVisible = false;
+        firebase.editPhrase(phraseToEdit, new Phrase(editedCategory, editedWord));
+        StateHasChanged();
+        datenverwaltung.refresh();
+    }
+
+}

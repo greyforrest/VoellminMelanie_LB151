@@ -9,6 +9,8 @@
         public List<string> bereitsGespielteWörter { get; set; }
         public int runden { get; set; }
 
+        public string databaseId { get; set; }
+
 
         public Player() { }
         public Player(string name)

@@ -1,9 +1,10 @@
 ﻿@page "/"
-@using Glücksrad.Data;
+@using Glücksrad.Data
 @inject FirebaseService firebase
 
 @if (player != null)
 {
+
     @if (wheelSpun)
     {
         <div class="row">
