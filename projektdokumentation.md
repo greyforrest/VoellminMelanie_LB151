@@ -9,7 +9,7 @@ Völlmin
 | 26.01.2023 | 0.0.3   | Erste Version erstellt (Funktionalität etwa 70%) |
 | 17.02.2023 | 0.0.4   | Design und Logikupdates, Probleme mit Firebase |
 | 23.02.2023 | 0.0.5   | Funktionalität circa 95%, Adminlogin fehlt |
-| | 0.0.6   | |
+| 01.03.2023 | 0.0.6   | Funktionalität 100% inklusive Adminlogin |
 | | 1.0.0   | |
 
 # 0 Ihr Projekt
@@ -59,7 +59,7 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | TC-№ | Vorbereitung | Eingabe | Erwartete Ausgabe |
 | ---- | ------------ | ------- | ----------------- |
 | 1.1 | Website geöffnet, Admin noch nicht eingeloggt | Der Admin gibt beim Admin-Login korrekte Daten ein. | Der Admin hat nun Zugriff auf eine weitere Seite, auf welcher er die Wörter und Kategorien des Spiels verwalten kann. |
-| 1.2 | Website geöffnet, Admin noch nicht eingeloggt | Der Admin gibt beim Admin-Login falsche Daten ein. | Der Admin hat keinen Zugriff auf die Verwaltungsseite und ist nicht eingeloogt. |
+| 1.2 | Website geöffnet, Admin noch nicht eingeloggt | Der Admin gibt beim Admin-Login falsche Daten ein. | Der Admin hat keinen Zugriff auf die Verwaltungsseite und ist nicht eingeloggt. |
 | 1.3 | Website geöffnet, Admin noch nicht eingeloggt | Der Admin gibt beim Admin-Login korrekte Daten ein. | Der Admin kann Einträge von der Highscore-Liste entfernen. |
 | 1.4 | Website geöffnet, Admin noch nicht eingeloggt | Der Admin gibt beim Admin-Login falsche Daten ein. | Der Admin ist nicht eingeloggt und kann somit auch nichts an der Highscore-Liste verändern. |
 | 2.1 | Website geöffnet, Admin eingeloggt, Verwaltungsseite geöffnet | Der Admin klickt bei einem Wort/Satz aus der Wortliste auf den Mülleimer (= "löschen"). | Das Wort verschwindet aus der Liste und der Datenbank, und wird auch bei erneutem Öffnen der Seite nicht mehr angezeigt. |
@@ -105,6 +105,14 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 8 | 23.02.2023 | Rangliste ist nach Geldbeträgen sortiert |
 | 10 | 23.02.2023 | Button "Spiel beenden" ist zu sehen und speichert aktuellen Stand in der Datenbank, Spiel wird beendet |
 | 11 | 23.02.2023 | Anzahl gespielte Runden werden in der Highscoreliste angezeigt |
+| 1 | 01.03.2023| Admin kann sich mit Login "adminlogin" und "difficultAdminLoginPassw0rd" einloggen.  |
+| 2 | 01.03.2023| Eingeloggter Admin kann Wörter und Kategorien hinzufügen, bearbeiten und löschen.  |
+| 3 | 01.03.2023| Eingeloggter Admin kann die Kategorien der Wörter bearbeiten und neue Kategorien hinzufügen. |
+| 4 | 01.03.2023| Eingeloggter Admin kann Highscore-Einträge löschen. |
+| A | 01.03.2023| Highscore kann als Txt heruntergeladen werden. |
+
+
+
 
 # 7 Projektdokumentation
 
