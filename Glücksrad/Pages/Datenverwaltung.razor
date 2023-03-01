@@ -146,6 +146,7 @@ else
     {
         allHighscores = await firebase.getAllHighscores();
         allWords = await firebase.getAllWords();
+        allWords.Sort((x, y) => x.category.CompareTo(y.category));
         allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
         StateHasChanged();
     }
@@ -179,6 +180,7 @@ else
     public async void refresh()
     {
         allWords = await firebase.getAllWords();
+        allWords.Sort((x, y) => x.category.CompareTo(y.category));
         allHighscores = await firebase.getAllHighscores();
         allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
         StateHasChanged();

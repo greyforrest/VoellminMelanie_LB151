@@ -14,7 +14,9 @@
             <div class="col">Lebenspunkte: @player.lebenspunkte / 3</div>
         </div>
         <div class="row">
-            <div class="col-9"></div>
+            <div class="col-9">
+                @firebase.spinResult
+            </div>
             <div class="col text-right">
                 <button class="btn btn-dark" onclick="@stop">Spiel beenden</button><br />
 
@@ -66,9 +68,8 @@
             </div>
         </div>
         <div class="text-center" id="wheel-spin">
-            <h1>Willkommen bei Glücksrad</h1>
             <button class="btn btn-dark mt-3" onclick="@spin">Glücksrad drehen</button>
-            <p>@glücksradresultat</p>
+            <p>@firebase.spinResult</p>
         </div>
     }
 
@@ -86,7 +87,6 @@ else
 
 @code {
     private bool wheelSpun = false;
-    private string glücksradresultat; 
     private string name = null;
     private Player player = null;
     private string userGuess;
@@ -121,6 +121,7 @@ else
             else
             {
                 bool alive = player.removeLebenspunkt();
+                isGuessCorrect = "";
                 if (!alive)
                 {
                     gameLost();
@@ -137,7 +138,8 @@ else
                     isGuessCorrect = "Bereits geraten...";
                 } else if (aktuellesWort.ToLower().Contains(userGuess.ToLower().ToCharArray()[0]))
                 {
-                    lettersKnown.Add(userGuess.ToCharArray()[0]);
+                    lettersKnown.Add(userGuess.ToLower().ToCharArray()[0]);
+                    isGuessCorrect = "";
                     player.changeKontostand(geldfaktor);
                     if (wordFull())
                     {
@@ -149,6 +151,7 @@ else
                 else
                 {
                     bool alive = player.removeLebenspunkt();
+                    isGuessCorrect = "";
                     if (!alive)
                     {
                         gameLost();
@@ -202,11 +205,14 @@ else
 
     private void gameLost()
     {
-        foreach (char letter in aktuellesWort)
+        if(aktuellesWort != null)
         {
-            lettersKnown.Add(letter);
+            foreach (char letter in aktuellesWort)
+            {
+                lettersKnown.Add(letter);
+            }
+            player.emptyKontostand();
         }
-        player.emptyKontostand();
         isGuessCorrect = "Spiel verloren";
         name = "";
         Thread.Sleep(2000);
@@ -218,7 +224,7 @@ else
         Thread.Sleep(1000);
         isGuessCorrect = "";
         wheelSpun = false;
-        glücksradresultat = "";
+        firebase.spinResult = "Noch nicht gedreht";
         lettersKnown = new List<char>();
     }
 
@@ -238,13 +244,13 @@ else
         int glückszahl = new Random().Next(25);
         if (glückszahl == 1)
         {
-            glücksradresultat = "Bankrott!";
+            firebase.spinResult = "Bankrott!";
             gameLost();
         }
         else
         {
             geldfaktor = glückszahl * 15;
-            glücksradresultat = "Geld";
+            firebase.spinResult = "Geld pro richtiger Buchstabe: " + geldfaktor;
             
             while (true)
             {
@@ -257,7 +263,6 @@ else
                     break;
                 }
             }
-            Thread.Sleep(2000);
             wheelSpun = true;
             StateHasChanged();
         }

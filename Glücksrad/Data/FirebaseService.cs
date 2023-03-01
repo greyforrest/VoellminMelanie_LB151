@@ -9,6 +9,7 @@ namespace Glücksrad.Data
         private FirebaseClient firebaseClient = new FirebaseClient("https://gluecksrad-f1399-default-rtdb.europe-west1.firebasedatabase.app");
 
         public bool isLoggedIn { get; set; } = false;
+        public string spinResult { get; set; } = "Noch nicht gedreht";
 
         public async Task<List<Phrase>> getAllWords()
         {
@@ -48,39 +49,19 @@ namespace Glücksrad.Data
 
         public async void deletePhrase(Phrase phrase)
         {
-            List<Phrase> old = await getAllWords();
-            for(int i = 0; i < old.Count; i++)
-            {
-                if (old[i].word == phrase.word && old[i].category == phrase.category)
-                {
-                    old.Remove(old[i]);
-                    break;
-                }
-            }
-            await firebaseClient.Child("phrases").PutAsync(old);
+
+            await firebaseClient.Child("phrases").OrderBy("word").EqualTo(phrase.word).DeleteAsync(); 
         }
 
         public async void editPhrase(Phrase phrase, Phrase newPhrase)
         {
-            List<Phrase> old = await getAllWords();
-            for (int i = 0; i < old.Count; i++)
-            {
-                if (old[i].word == phrase.word && old[i].category == phrase.category)
-                {
-                    old[i] = newPhrase;
-                    break;
-                   
-                }
-            }
-            await firebaseClient.Child("phrases").PutAsync(old);
-
+            await firebaseClient.Child("phrases").OrderBy("word").EqualTo(phrase.word).PutAsync(newPhrase);
         }
 
         public async void addPhrase(Phrase phrase)
         {
-            List<Phrase> old = await getAllWords();
-            old.Add(phrase);
-            await firebaseClient.Child("phrases").PutAsync(old);
+            List<Phrase> all = await getAllWords();
+            await firebaseClient.Child("phrases").Child(all.Count.ToString()).PutAsync(new {word =  phrase.word, category =  phrase.category});
         }
         
         public async Task<bool> checkLogin(string name, string passwort)
