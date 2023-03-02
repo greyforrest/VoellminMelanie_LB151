@@ -8,7 +8,7 @@ Diese Blazor-Applikation ist ein "Replika" des Spieles "Glücksrad", bei welchem
 
 Der Code kann entweder als .zip heruntergeladen oder gleich das gesamte Repository geklont werden. Als IDE habe ich Visual Studio genutzt und würde dies auch weiterempfehlen.
 
-Der heruntergeladene Ordner muss noch entzippt werden und dann sollte mit einem Klick auf die .sln-Datei das Projekt (falls installiert) in Visual Studio geöffnet werden. Eventuell muss noch das NuGet-Packet "FirebaseDatabse.net" von StepUpLabs installiert werden.
+Der heruntergeladene Ordner muss noch entzippt werden und dann sollte mit einem Klick auf die .sln-Datei das Projekt (falls installiert) in Visual Studio geöffnet werden. Eventuell muss noch das NuGet-Packet "FirebaseDatabse.net" von StepUpLabs installiert werden. Danach kann auf "Start" (oben circa mittig, mit grünem Pfeil) geklickt werden und die Applikation sollte sich in einem Browserfenster öffnen.
 
 ### Datenbank
 
