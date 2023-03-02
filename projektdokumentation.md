@@ -32,7 +32,7 @@ In dieser Webapplikation soll der Nutzer ein Quiz spielen können, dass ähnlich
 
 # 3 Datenbank
 
-Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase und Firebase.Database). Die Verbindung stellt man durch einen Link der Datenbank her. Die Datenbank hat die Form eines JSON-Baums und kann einfach ausgelesen werden. Über die Firebase-Konsole kann man auf die Datenbank zugreifen und auch die Sicherheitsregeln einstellen. Man kann von dort aus Daten in die Datenbank schreiben und vorhandene Daten löschen, jedoch nicht bearbeiten.
+Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (FirebaseDatabase.net von StepUpLabs). Die Verbindung stellt man durch einen Link der Datenbank her. Die Datenbank hat die Form eines JSON-Baums und kann einfach ausgelesen werden. Über die Firebase-Konsole kann man auf die Datenbank zugreifen und auch die Sicherheitsregeln einstellen. Man kann von dort aus Daten in die Datenbank schreiben und vorhandene Daten löschen, jedoch nicht bearbeiten.
 
 # 4.1 User Stories
 
@@ -112,8 +112,6 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | A | 01.03.2023| Highscore kann als .txt heruntergeladen werden. |
 
 
-
-
 # 7 Projektdokumentation
 
 | US-№ | Erledigt? | Entsprechende Code-Dateien oder Erklärung |
@@ -137,12 +135,30 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 # 8 Testprotokoll
 
-✍️ Fügen Sie hier den Link zu dem Video ein, welches den Testdurchlauf dokumentiert.
+**Link zum Testvideo: https://youtu.be/OMwECtYwAjI **
 
 | TC-№ | Datum | Resultat | Tester |
 | ---- | ----- | -------- | ------ |
-| 1.1  |       |          |        |
-| ...  |       |          |        |
+| 1.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 1.2 | 02.03.2023 | OK | Melanie Völlmin |
+| 1.3 | 02.03.2023 | OK | Melanie Völlmin |
+| 1.4 | 02.03.2023 | OK | Melanie Völlmin |
+| 2.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 2.2 | 02.03.2023 | OK | Melanie Völlmin |
+| 2.3 | 02.03.2023 | OK | Melanie Völlmin |
+| 3.1 | 02.03.2023 | (OK) | Melanie Völlmin |
+| 4.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 5.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 6.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 7.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 7.2 | 02.03.2023 | (OK) | Melanie Völlmin |
+| 8.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 9.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 9.2 | 02.03.2023 | OK | Melanie Völlmin |
+| 9.3 | 02.03.2023 | OK | Melanie Völlmin |
+| 10.1 | 02.03.2023 | OK | Melanie Völlmin |
+| 10.2 | 02.03.2023 | OK | Melanie Völlmin |
+| 11.1 | 02.03.2023 | OK | Melanie Völlmin |
+| A.1 | 02.03.2023 | OK | Melanie Völlmin |
 
-✍️ Vergessen Sie nicht, ein Fazit hinzuzufügen, welches das Test-Ergebnis einordnet.
-
+Die Tests wurden gut erfüllt, das Raten eines falschen Buchstabens könnte verdeutlicht werden, ist jedoch in Ordnung. Testfall 3.1 kann nicht so durchgeführt werden, da die Ansicht anders umgesetzt wurde und es keine Kategorie-Ansicht gibt, sondern nur die Worte mit Kategorien gemeinsam. Trotzdem können Kategorien hinzugefügt, gelöscht und auch bearbeitet werden.
