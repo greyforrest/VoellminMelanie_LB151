@@ -23,3 +23,5 @@ Für das Adminlogin gibts es einen Account mit folgenden Daten:
 **Benutzername: adminlogin**
 
 **Passwort: difficultAdminLoginPassw0rd**
+
+Das Verändern der Daten aktualisiert die Ansicht nicht immer. Ein Highscore kann gelöscht werden und die Ansicht wird sofort aktualisiert. Bei Wörtern wird die Ansicht jedoch nicht aktualisiert. Egal ob ein Wort gelöscht, hinzugefügt oder bearbeitet wird, man muss die Ansicht verlassen und wieder zurückkommen um eine angepasst Ansicht zu bekommen. Die Daten werden im Hintergrund jedoch korrekt verarbeitet. 
