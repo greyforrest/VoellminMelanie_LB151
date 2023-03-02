@@ -131,7 +131,7 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 11 | ja | "Highscores.razor" zeigt Anzahl gespielte Runden an. |
 | 12 | nein | Textfelder werden nicht überprüft, es wird keine Validierung vorgenommen.  |
 | 13 | nein | Passwort des Admins wurde in der Datenbank aus zeitlichen Gründen nicht gehashet, Link zu Firebasedatenbank ist auf Github sichtbar und somit für andere zugreifbar. |
-| A | ja | "Highscores.razor" hat einen Knopf "Herunterladen", der die Rangliste als .txt herunterlädt. |
+| A | ja | "Highscores.razor" hat einen Knopf "Herunterladen", der die Rangliste als .txt herunterlädt. Das Herunterladen wird via .js gemacht (siehe "download.js" in wwwroot). |
 | B | ja | Wurde in Blazor umgesetzt, deswegen auch "Seitennname.**razor**" |
 
 
@@ -146,12 +146,3 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 ✍️ Vergessen Sie nicht, ein Fazit hinzuzufügen, welches das Test-Ergebnis einordnet.
 
-# 9 `README.md`
-
-✍️ Beschreiben Sie ausführlich in einer README.md, wie Ihre Applikation gestartet und ausgeführt wird. Legen Sie eine geeignete Möglichkeit (Skript, Export, …) bei, Ihre Datenbank wiederherzustellen.
-
-# 10 Allgemeines
-
-- [ ] Ich habe die Rechtschreibung überprüft
-- [ ] Ich habe überprüft, dass die Nummerierung von Testfällen und User Stories übereinstimmen
-- [ ] Ich habe alle mit ✍️ markierten Teile ersetzt
