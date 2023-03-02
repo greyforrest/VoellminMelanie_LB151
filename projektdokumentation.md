@@ -47,7 +47,7 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 7 | Muss | Funktional | Als Kandidat*/in möchte ich wissen, ob meine Antwort richtig oder falsch wahr, damit ich mit dem Spiel fortfahren kann. |
 | 8 | Muss | Qualität | Als Kandidat*/in möchte ich Rangliste nach Geldbetrag sortiert haben, damit ich sehe, wie ich im Vergleich zu anderen Spielern stehe.|
 | 9 | Muss | Funktional | Als Kandidat*/in möchte ich Wörter und Phrasen nur einmal spielen, damit das Spiel spannend gehalten wird.|
-| 10 | Muss | Funktional | Als Kandidat*/in möchte ich jeder Zeit aufhören und meinen Geldbetrag in die Highscore-Liste eintragen können, damit ich einen guten Highscore erzielen kann. |
+| 10 | Muss | Funktional | Als Kandidat*/in möchte ich jederzeit aufhören und meinen Geldbetrag in die Highscore-Liste eintragen können, damit ich einen guten Highscore erzielen kann. |
 | 11 | Muss | Funktional | Als Kandidat*/in möchte ich beim Aufhören wissen, wie viele Runden ich gespielt habe, damit ich das Verhältnis meines Geldbetrages mit den gespielten Runden mit den anderen Spieler in der Highscore-Liste vergleichen kann. |
 | 12 | Muss | Rand | Als Auftraggeber möchte ich, dass einfache Textfelder sowohl client- als auch serverseitig geprüft werden, damit der Benutzer keinen Einfluss auf die Validierung haben kann. |
 | 13 | Muss | Rand | Als Auftraggeber möchte ich, dass die Applikation so sicher wie möglich ist, damit ich meine Daten schützen und meinen Benutzern eine tolle Erfahrung bieten kann. |
@@ -109,7 +109,7 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 | 2 | 01.03.2023| Eingeloggter Admin kann Wörter und Kategorien hinzufügen, bearbeiten und löschen.  |
 | 3 | 01.03.2023| Eingeloggter Admin kann die Kategorien der Wörter bearbeiten und neue Kategorien hinzufügen. |
 | 4 | 01.03.2023| Eingeloggter Admin kann Highscore-Einträge löschen. |
-| A | 01.03.2023| Highscore kann als Txt heruntergeladen werden. |
+| A | 01.03.2023| Highscore kann als .txt heruntergeladen werden. |
 
 
 
@@ -118,8 +118,22 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 | US-№ | Erledigt? | Entsprechende Code-Dateien oder Erklärung |
 | ---- | --------- | ----------------------------------------- |
-| 1    | ja / nein |                                           |
-| ...  |           |                                           |
+| 1 | ja | Adminlogin auf der Seite "Datenverwaltung.razor", Passwort und Benutzername auf Firebase gespeichert |
+| 2 | ja | Eingeloggter Admin sieht auf Seite "Datenverwaltung.razor" alle Wörter und Kategorien, gespeichert in Firebase, können bearbeitet, gelöscht und neu hinzugefügt werden. |
+| 3 | ja | Kategorien sind nicht separat sichtbar, nur gemeinsam mit Wörtern, ebenfalls in "Datenverwaltung.razor" |
+| 4 | ja | Highscore-Liste wird ebenfalls in "Datenverwaltung.razor" angezeigt, jeder Eintrag kann gelöscht werden. |
+| 5 | ja | "Glücksspiel.razor" fragt zuerst nach einem Namen, dieser wird dann in Datenbank gespeichert. |
+| 6 | ja | "Glücksspiel.razor" zeigt während des Spiels immer Lebenspunkte und Kontostand an. |
+| 7 | ja | Falsche Antwort: Nichts passiert/ Richtige Antwort: Buchstabe(n) wird (werden) eingesetzt. Datei: Glücksspiel.razor |
+| 8 | ja | "Highscores.razor" sortiert die Liste nach Geldbeträgen. |
+| 9 | ja | Gespielte Wörter werden im Spieler abgespeichert, bei ausgewähltem Wort wird zuerst überprüft, ob es bereits gespielt wurde. Datei: Player.cs |
+| 10 | ja | "Glücksspiel.razor" zeigt Knopf, um das Spiel zu stoppen. |
+| 11 | ja | "Highscores.razor" zeigt Anzahl gespielte Runden an. |
+| 12 | nein | Textfelder werden nicht überprüft, es wird keine Validierung vorgenommen.  |
+| 13 | nein | Passwort des Admins wurde in der Datenbank aus zeitlichen Gründen nicht gehashet, Link zu Firebasedatenbank ist auf Github sichtbar und somit für andere zugreifbar. |
+| A | ja | "Highscores.razor" hat einen Knopf "Herunterladen", der die Rangliste als .txt herunterlädt. Das Herunterladen wird via .js gemacht (siehe "download.js" in wwwroot). |
+| B | ja | Wurde in Blazor umgesetzt, deswegen auch "Seitennname.**razor**" |
+
 
 # 8 Testprotokoll
 
@@ -132,12 +146,3 @@ Die Firebase-Datenbank wird mit Firebase-Nugetpackages angesprochen (Firebase un
 
 ✍️ Vergessen Sie nicht, ein Fazit hinzuzufügen, welches das Test-Ergebnis einordnet.
 
-# 9 `README.md`
-
-✍️ Beschreiben Sie ausführlich in einer README.md, wie Ihre Applikation gestartet und ausgeführt wird. Legen Sie eine geeignete Möglichkeit (Skript, Export, …) bei, Ihre Datenbank wiederherzustellen.
-
-# 10 Allgemeines
-
-- [ ] Ich habe die Rechtschreibung überprüft
-- [ ] Ich habe überprüft, dass die Nummerierung von Testfällen und User Stories übereinstimmen
-- [ ] Ich habe alle mit ✍️ markierten Teile ersetzt
