@@ -2,23 +2,30 @@
 @using Glücksrad.Data
 @inject FirebaseService firebase
 
-@if (player != null)
+@if (spieler != null)
 {
+    @if (istSpielFertig)
+    {
+        <div class="text-center">
+            <h1>Game gewonnen! Gratulation!</h1>
+            <button class="btn btn-dark mt-3" onclick="@neuesSpiel">Neues Spiel</button>
 
-    @if (wheelSpun)
+        </div>
+    }
+    @if (radGedreht)
     {
         <div class="row">
-            <div class="col">Spieler: @player.name</div>
-            <div class="col">Runde: @player.runden</div>
-            <div class="col">Kontostand: @player.kontostand</div>
-            <div class="col">Lebenspunkte: @player.lebenspunkte / 3</div>
+            <div class="col">Spieler: @spieler.name</div>
+            <div class="col">Runde: @spieler.runden</div>
+            <div class="col">Kontostand: @spieler.kontostand</div>
+            <div class="col">Lebenspunkte: @spieler.lebenspunkte / 3</div>
         </div>
         <div class="row">
             <div class="col-9">
-                @firebase.spinResult
+                @firebase.radResultat
             </div>
             <div class="col text-right">
-                <button class="btn btn-dark" onclick="@stop">Spiel beenden</button><br />
+                <button class="btn btn-dark" onclick="@stopp">Spiel beenden</button><br />
 
             </div>
         </div>
@@ -26,7 +33,7 @@
             <p>
                 @foreach (char letter in aktuellesWort.ToCharArray())
                 {
-                     if (lettersKnown.Contains(Char.ToLower(letter)))
+                     if (bekannteBuchstaben.Contains(Char.ToLower(letter)))
                     {
                         <span> @letter </span>
                     }
@@ -39,37 +46,37 @@
         </div>
 
         <p>Kategorie: @aktuelleKategorie</p>
-        <input placeholder="Buchstabe oder Wort raten" type="text" @bind="@userGuess" />
-        <button class="btn btn-dark" onclick="@guess">Raten</button>
+        <input placeholder="Buchstabe oder Wort raten" type="text" @bind="@rateversuch" />
+        <button class="btn btn-dark" onclick="@raten">Raten</button>
         <br />
-        <p>@isGuessCorrect</p>
+        <p>@isRateversuchKorrekt</p>
         <p>Vokal kaufen: @(geldfaktor * 2) Franken</p>
         <div class="row">
-            <div class="col-1"><button class="btn btn-dark" @onclick="() => guessVokal('a')">A</button></div>
-            <div class="col-1"><button class="btn btn-dark" @onclick="() => guessVokal('e')">E</button></div>
-            <div class="col-1"><button class="btn btn-dark" @onclick="() => guessVokal('i')">I</button></div>
-            <div class="col-1"><button class="btn btn-dark" @onclick="() => guessVokal('o')">O</button></div>
-            <div class="col-1"><button class="btn btn-dark" @onclick="() => guessVokal('u')">U</button></div>
+            <div class="col-1"><button class="btn btn-dark" @onclick="() => vokalRaten('a')">A</button></div>
+            <div class="col-1"><button class="btn btn-dark" @onclick="() => vokalRaten('e')">E</button></div>
+            <div class="col-1"><button class="btn btn-dark" @onclick="() => vokalRaten('i')">I</button></div>
+            <div class="col-1"><button class="btn btn-dark" @onclick="() => vokalRaten('o')">O</button></div>
+            <div class="col-1"><button class="btn btn-dark" @onclick="() => vokalRaten('u')">U</button></div>
         </div>
     }
     else
     {
         <div class="row">
-            <div class="col">Spieler: @player.name</div>
-            <div class="col">Runde: @player.runden</div>
-            <div class="col">Kontostand: @player.kontostand</div>
-            <div class="col">Lebenspunkte: @player.lebenspunkte / 3</div>
+            <div class="col">Spieler: @spieler.name</div>
+            <div class="col">Runde: @spieler.runden</div>
+            <div class="col">Kontostand: @spieler.kontostand</div>
+            <div class="col">Lebenspunkte: @spieler.lebenspunkte / 3</div>
         </div>
         <div class="row">
             <div class="col-9"></div>
             <div class="col text-right">
-                <button class="btn btn-dark" onclick="@stop">Spiel beenden</button><br />
+                <button class="btn btn-dark" onclick="@stopp">Spiel beenden</button><br />
 
             </div>
         </div>
         <div class="text-center" id="wheel-spin">
-            <button class="btn btn-dark mt-3" onclick="@spin">Glücksrad drehen</button>
-            <p>@firebase.spinResult</p>
+            <button class="btn btn-dark mt-3" onclick="@radDrehen">Glücksrad drehen</button>
+            <p>@firebase.radResultat</p>
         </div>
     }
 
@@ -86,194 +93,204 @@ else
 
 
 @code {
-    private bool wheelSpun = false;
+    private bool radGedreht = false;
     private string name = null;
-    private Player player = null;
-    private string userGuess;
-    private List<Phrase> phrases;
+    private Spieler spieler = null;
+    private string rateversuch;
+    private List<Phrase> phrasen;
     private string aktuellesWort;
     private String aktuelleKategorie;
-    private string isGuessCorrect = "";
-    private List<char> lettersKnown = new List<char>() {'.', '!', '?', ' '};
+    private string isRateversuchKorrekt = "";
+    private List<char> bekannteBuchstaben = new List<char>() {'.', '!', '?', ' '};
     private int geldfaktor = 0;
+    private bool istSpielFertig = false;
 
     protected async override void OnInitialized()
     {
-        phrases = await firebase.getAllWords();
+        phrasen = await firebase.getAllePhrasen();
 
     }
 
-    private void guess()
+    private void raten()
     {
-        if (userGuess.Length > 1)
+        if (rateversuch.Length > 1)
         {
-            if (userGuess.ToLower() == aktuellesWort.ToLower())
+            if (rateversuch.ToLower() == aktuellesWort.ToLower())
             {
-                isGuessCorrect = "Korrekt geraten!";
-                player.changeKontostand(geldfaktor * 5);
-                foreach (char letter in aktuellesWort)
+                isRateversuchKorrekt = "Korrekt geraten!";
+                spieler.kontostandÄndern(geldfaktor * 5);
+                foreach (char buchstabe in aktuellesWort)
                 {
-                    lettersKnown.Add(letter);
+                    bekannteBuchstaben.Add(buchstabe);
                 }
-                gameWon();
+                spielGewonnen();
 
             }
             else
             {
-                bool alive = player.removeLebenspunkt();
-                isGuessCorrect = "";
-                if (!alive)
+                bool lebtSpielerNoch = spieler.lebenspunktAbziehen();
+                isRateversuchKorrekt = "";
+                if (!lebtSpielerNoch)
                 {
-                    gameLost();
+                    spielVerloren();
                 }
             }
 
         }
-        else if (userGuess.Length == 1)
+        else if (rateversuch.Length == 1)
         {
-            if (!userGuess.Contains("a") && !userGuess.Contains("A") && !userGuess.Contains("e") && !userGuess.Contains("E") && !userGuess.Contains("i") && !userGuess.Contains("I") && !userGuess.Contains("o") && !userGuess.Contains("O") && !userGuess.Contains("u") && !userGuess.Contains("U"))
+            if (!rateversuch.Contains("a") && !rateversuch.Contains("A") && !rateversuch.Contains("e") && !rateversuch.Contains("E") && !rateversuch.Contains("i") && !rateversuch.Contains("I") && !rateversuch.Contains("o") && !rateversuch.Contains("O") && !rateversuch.Contains("u") && !rateversuch.Contains("U"))
             {
-                if(lettersKnown.Contains(userGuess.ToLower().ToCharArray()[0]))
+                if(bekannteBuchstaben.Contains(rateversuch.ToLower().ToCharArray()[0]))
                 {
-                    isGuessCorrect = "Bereits geraten...";
-                } else if (aktuellesWort.ToLower().Contains(userGuess.ToLower().ToCharArray()[0]))
+                    isRateversuchKorrekt = "Bereits geraten...";
+                } else if (aktuellesWort.ToLower().Contains(rateversuch.ToLower().ToCharArray()[0]))
                 {
-                    lettersKnown.Add(userGuess.ToLower().ToCharArray()[0]);
-                    isGuessCorrect = "";
-                    player.changeKontostand(geldfaktor);
-                    if (wordFull())
+                    bekannteBuchstaben.Add(rateversuch.ToLower().ToCharArray()[0]);
+                    isRateversuchKorrekt = "";
+                    spieler.kontostandÄndern(geldfaktor);
+                    if (vollesWortBekannt())
                     {
-                        isGuessCorrect = "Wort erraten! Glückwunsch";
-                        gameWon();
+                        isRateversuchKorrekt = "Wort erraten! Glückwunsch";
+                        spielGewonnen();
                     }
 
                 }
                 else
                 {
-                    bool alive = player.removeLebenspunkt();
-                    isGuessCorrect = "";
-                    if (!alive)
+                    bool lebtSpielerNoch = spieler.lebenspunktAbziehen();
+                    isRateversuchKorrekt = "";
+                    if (!lebtSpielerNoch)
                     {
-                        gameLost();
+                        spielVerloren();
                     }
                 }
             }
             else
             {
-                isGuessCorrect = "Sie können keine Vokale raten";
+                isRateversuchKorrekt = "Sie können keine Vokale raten";
             }
 
         }
         else
         {
-            isGuessCorrect = "Rateversuch ungültig";
+            isRateversuchKorrekt = "Rateversuch ungültig";
         }
-        userGuess = "";
+        rateversuch = "";
     }
 
-    private void guessVokal(char vokal)
+    private void vokalRaten(char vokal)
     {
-        isGuessCorrect = "";
-        if (player.kontostand >= (geldfaktor * 2))
+        isRateversuchKorrekt = "";
+        if (spieler.kontostand >= (geldfaktor * 2))
         {
-            player.changeKontostand(-(geldfaktor * 2));
+            spieler.kontostandÄndern(-(geldfaktor * 2));
             if (aktuellesWort.ToLower().Contains(char.ToLower(vokal)))
             {
-                lettersKnown.Add(vokal);
-                if (wordFull())
+                bekannteBuchstaben.Add(vokal);
+                if (vollesWortBekannt())
                 {
-                    isGuessCorrect = "Wort erraten! Glückwunsch";
-                    gameWon();
+                    isRateversuchKorrekt = "Wort erraten! Glückwunsch";
+                    spielGewonnen();
                 }
 
             }
             else
             {
-                bool alive = player.removeLebenspunkt();
-                if (!alive)
+                bool lebtSpielerNoch = spieler.lebenspunktAbziehen();
+                if (!lebtSpielerNoch)
                 {
-                    gameLost();
+                    spielVerloren();
                 }
             }
         }
         else
         {
-            isGuessCorrect = "Sie haben nicht genug Geld dafür.";
+            isRateversuchKorrekt = "Sie haben nicht genug Geld dafür.";
         }
 
     }
 
-    private void gameLost()
+    private void spielVerloren()
     {
         if(aktuellesWort != null)
         {
-            foreach (char letter in aktuellesWort)
+            foreach (char buchstaben in aktuellesWort)
             {
-                lettersKnown.Add(letter);
+                bekannteBuchstaben.Add(buchstaben);
             }
-            player.emptyKontostand();
+            spieler.kontostandLeeren();
         }
-        isGuessCorrect = "Spiel verloren";
+        isRateversuchKorrekt = "Spiel verloren";
         name = "";
         Thread.Sleep(2000);
-        stop();
+        stopp();
     }
 
-    private void gameWon()
+    private void spielGewonnen()
     {
         Thread.Sleep(1000);
-        isGuessCorrect = "";
-        wheelSpun = false;
-        firebase.spinResult = "Noch nicht gedreht";
-        lettersKnown = new List<char>();
+        isRateversuchKorrekt = "";
+        radGedreht = false;
+        firebase.radResultat = "Noch nicht gedreht";
+        bekannteBuchstaben = new List<char>();
     }
 
-    private bool playerNotNull()
+    private bool hatSpielerWert()
     {
         if (name != null && name.Length >= 2)
         {
-            player = new Player(name);
+            spieler = new Spieler(name);
             return true;
         }
         return false;
     }
 
-    private void spin()
+    private void radDrehen()
     {
-        player.increaseRunden();
-        int glückszahl = new Random().Next(25);
-        if (glückszahl == 1)
+        if(spieler.bereitsGespielteWörter.Count < phrasen.Count)
         {
-            firebase.spinResult = "Bankrott!";
-            gameLost();
-        }
-        else
-        {
-            geldfaktor = glückszahl * 15;
-            firebase.spinResult = "Geld pro richtiger Buchstabe: " + geldfaktor;
-            
-            while (true)
+            spieler.rundenzahlErhöhen();
+            int glückszahl = new Random().Next(25);
+            if (glückszahl == 1)
             {
-                int randWortindex = new Random().Next(phrases.Count);
-                Phrase aktuell = phrases.ElementAt(randWortindex);
-                if (player.addWord(aktuell.word))
-                {
-                    aktuellesWort = aktuell.word;
-                    aktuelleKategorie = aktuell.category;
-                    break;
-                }
+                firebase.radResultat = "Bankrott!";
+                spielVerloren();
             }
-            wheelSpun = true;
-            StateHasChanged();
+            else
+            {
+                geldfaktor = glückszahl * 15;
+                firebase.radResultat = "Geld pro richtiger Buchstabe: " + geldfaktor;
+
+                while (true)
+                {
+                    int randWortindex = new Random().Next(phrasen.Count);
+                    Phrase aktuell = phrasen.ElementAt(randWortindex);
+                    if (spieler.wortHinzufügen(aktuell.phrase))
+                    {
+                        aktuellesWort = aktuell.phrase;
+                        aktuelleKategorie = aktuell.kategorie;
+                        break;
+                    }
+                }
+                radGedreht = true;
+                StateHasChanged();
+            }
+        } else
+        {
+            istSpielFertig = true;
+            firebase.highscoreHinzufügen(spieler);
+
         }
+
 
     }
 
-    private bool wordFull()
+    private bool vollesWortBekannt()
     {
         foreach (char letter in aktuellesWort)
         {
-            if (!lettersKnown.Contains(Char.ToLower(letter)))
+            if (!bekannteBuchstaben.Contains(Char.ToLower(letter)))
             {
                 return false;
             }
@@ -285,14 +302,21 @@ else
     {
         if (name != null && name.Length >= 2)
         {
-            player = new Player(name);
+            spieler = new Spieler(name);
         }
     }
 
-    public void stop()
+    public void stopp()
     {
-        firebase.addHighscore(player);
-        player = null;
-        wheelSpun = false;
+        firebase.highscoreHinzufügen(spieler);
+        spieler = null;
+        radGedreht = false;
+    }
+
+    public void neuesSpiel()
+    {
+        istSpielFertig = false;
+        spieler = null;
+        radGedreht = false;
     }
 }

@@ -20,15 +20,17 @@
                 <th>Spieler</th>
                 <th>Kontostand</th>
                 <th>Runden</th>
+                <th>Zeitpunkt</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Player highscore in allHighscores)
+            @foreach (Spieler highscore in allHighscores)
             {
                     <tr>
                         <td>@highscore.name</td>
                         <td>@highscore.kontostand</td>
                         <td>@highscore.runden</td>
+                        <td>@highscore.zeitpunkt</td>
                     </tr>
             }
         </tbody>
@@ -41,11 +43,11 @@
 
 
 @code {
-    List<Player> allHighscores;
+    List<Spieler> allHighscores;
 
     protected async override void OnInitialized()
     {
-        allHighscores = await firebase.getAllHighscores();
+        allHighscores = await firebase.getAlleHighscores();
         allHighscores.Sort((x, y) => y.kontostand.CompareTo(x.kontostand));
         StateHasChanged();
     }
@@ -54,9 +56,11 @@
     {
         string filename = "highscores.txt";
         string filecontent = "Highscores \n";
-        foreach(Player highscore in allHighscores)
+        int count = 0;
+        foreach(Spieler highscore in allHighscores)
         {
-            filecontent += highscore.name + ", " + highscore.runden + " Runden, Kontostand " + highscore.kontostand + "\n";
+            count++;
+            filecontent += count + ". " + highscore.name + ", " + highscore.runden + " Runden, Kontostand " + highscore.kontostand + ", gespielt am " + highscore.zeitpunkt + "\n";
         }
 
         await js.InvokeAsync<object>("saveAsFile", filename, filecontent);

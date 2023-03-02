@@ -1,6 +1,6 @@
 ﻿namespace Glücksrad.Data
 {
-    public class Player
+    public class Spieler
     {
 
         public string name { get; set; }
@@ -8,51 +8,52 @@
         public int lebenspunkte { get; set; }
         public List<string> bereitsGespielteWörter { get; set; }
         public int runden { get; set; }
+        public DateTime zeitpunkt { get; set; }
+        public string datenbankID { get; set; }
 
-        public string databaseId { get; set; }
 
-
-        public Player() { }
-        public Player(string name)
+        public Spieler() { }
+        public Spieler(string name)
         {
             this.name = name;
             kontostand = 0;
             lebenspunkte = 3;
             runden = 0;
             bereitsGespielteWörter = new List<string>();
+            zeitpunkt = DateTime.Now;
         }
 
         //Gibt *false* zurück, wenn das Wort bereits in der Liste ist, ansonst wird das Wort hinzugefügt und returned true
-        public bool addWord(string word)
+        public bool wortHinzufügen(string wort)
         {
-            if (bereitsGespielteWörter.Contains(word))
+            if (bereitsGespielteWörter.Contains(wort))
             {
                 return false;
             }
             else
             {
-                bereitsGespielteWörter.Add(word);
+                bereitsGespielteWörter.Add(wort);
                 return true;
             }
         }
 
-        public void increaseRunden()
+        public void rundenzahlErhöhen()
         {
             runden++;
         }
 
-        public void changeKontostand(int number)
+        public void kontostandÄndern(int änderung)
         {
-            kontostand += number;
+            kontostand += änderung;
         }
 
-        public void emptyKontostand()
+        public void kontostandLeeren()
         {
             kontostand = 0;
         }
 
         //Zieht ein Lebenspunkt ab und gibt dann aus, ob der Spieler noch lebt (true/false)
-        public bool removeLebenspunkt()
+        public bool lebenspunktAbziehen()
         {
             lebenspunkte -= 1;
             if (lebenspunkte > 0)

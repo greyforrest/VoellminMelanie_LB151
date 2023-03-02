@@ -2,9 +2,9 @@
 {
     public class Phrase
     {
-        public string category { get; set; }
+        public string kategorie { get; set; }
 
-        public string word { get; set; }
+        public string phrase { get; set; }
 
         public Phrase()
         {
@@ -13,8 +13,8 @@
 
         public Phrase(string category, string word)
         {
-            this.category = category;
-            this.word = word;
+            this.kategorie = category;
+            this.phrase = word;
         }
     }
 }

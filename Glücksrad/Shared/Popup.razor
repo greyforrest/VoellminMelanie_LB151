@@ -33,12 +33,12 @@
     Phrase phraseToEdit;
     Datenverwaltung datenverwaltung;
 
-    public void Show(Phrase phraseToEdit, Datenverwaltung datenverwaltung)
+    public void Anzeigen(Phrase phraseToEdit, Datenverwaltung datenverwaltung)
     {
         IsVisible = true;
         this.phraseToEdit = phraseToEdit;
-        editedWord = phraseToEdit.word;
-        editedCategory = phraseToEdit.category;
+        editedWord = phraseToEdit.phrase;
+        editedCategory = phraseToEdit.kategorie;
         this.datenverwaltung = datenverwaltung;
         StateHasChanged();
     }
@@ -52,9 +52,9 @@
     private void Save()
     {
         IsVisible = false;
-        firebase.editPhrase(phraseToEdit, new Phrase(editedCategory, editedWord));
+        firebase.phraseBearbeiten(phraseToEdit, new Phrase(editedCategory, editedWord));
         StateHasChanged();
-        datenverwaltung.refresh();
+        datenverwaltung.neuLaden();
     }
 
 }

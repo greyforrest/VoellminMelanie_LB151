@@ -1,6 +1,5 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
-using Google.Cloud.Firestore;
 
 namespace Glücksrad.Data
 {
@@ -8,63 +7,80 @@ namespace Glücksrad.Data
     {
         private FirebaseClient firebaseClient = new FirebaseClient("https://gluecksrad-f1399-default-rtdb.europe-west1.firebasedatabase.app");
 
-        public bool isLoggedIn { get; set; } = false;
-        public string spinResult { get; set; } = "Noch nicht gedreht";
+        public bool eingeloggt { get; set; } = false;
+        public string radResultat { get; set; } = "Noch nicht gedreht";
 
-        public async Task<List<Phrase>> getAllWords()
+        public async Task<List<Phrase>> getAllePhrasen()
         {
-            var words = await firebaseClient.Child("phrases").OnceAsListAsync<Phrase>();
-            return words?.Select(x => new Phrase()
+            var phrasen = await firebaseClient.Child("phrases").OnceAsListAsync<Phrase>();
+            return phrasen?.Select(x => new Phrase()
             {
-                category = x.Object.category,
-                word = x.Object.word
+                kategorie = x.Object.kategorie,
+                phrase = x.Object.phrase
             }).ToList();
 
         }
 
-        public async void addHighscore(Player player)
+        public async void highscoreHinzufügen(Spieler spieler)
         {
-            await firebaseClient.Child("highscore").PostAsync(player);
+            await firebaseClient.Child("highscore").PostAsync(spieler);
 
         }
 
-        public async Task<List<Player>> getAllHighscores()
+        public async Task<List<Spieler>> getAlleHighscores()
         {
-            var words = await firebaseClient.Child("highscore").OnceAsync<Player>();
-            return words?.Select(x => new Player()
+            var phrasen = await firebaseClient.Child("highscore").OnceAsync<Spieler>();
+            return phrasen?.Select(x => new Spieler()
             {
                 name = x.Object.name,
                 kontostand = x.Object.kontostand,
                 lebenspunkte = x.Object.lebenspunkte,
+                zeitpunkt = x.Object.zeitpunkt,
                 bereitsGespielteWörter = x.Object.bereitsGespielteWörter,
                 runden = x.Object.runden,
-                databaseId = x.Key
+                datenbankID = x.Key
             }).ToList();
         }
 
-        public async void deletePlayer(Player player)
+        public async void spielerLöschen(Spieler spieler)
         {
-            await firebaseClient.Child("highscore").Child(player.databaseId).DeleteAsync();
+            await firebaseClient.Child("highscore").Child(spieler.datenbankID).DeleteAsync();
         }
 
-        public async void deletePhrase(Phrase phrase)
+        public async void phraseLöschen(Phrase phrase)
         {
-
-            await firebaseClient.Child("phrases").OrderBy("word").EqualTo(phrase.word).DeleteAsync(); 
+            List<Phrase> alles = await getAllePhrasen();
+            for(int i = 0; i < alles.Count; i++)
+            {
+                if (alles[i].phrase ==  phrase.phrase && alles[i].kategorie == phrase.kategorie)
+                {
+                    alles.RemoveAt(i);
+                }
+            }
+            await firebaseClient.Child("phrases").PutAsync(alles); 
         }
 
-        public async void editPhrase(Phrase phrase, Phrase newPhrase)
+        public async void phraseBearbeiten(Phrase phrase, Phrase neuePhrase)
         {
-            await firebaseClient.Child("phrases").OrderBy("word").EqualTo(phrase.word).PutAsync(newPhrase);
+            List<Phrase> alles = await getAllePhrasen();
+            for (int i = 0; i < alles.Count; i++)
+            {
+                if (alles[i].phrase == phrase.phrase && alles[i].kategorie == phrase.kategorie)
+                {
+                    alles[i] = neuePhrase;
+                }
+            }
+            await firebaseClient.Child("phrases").PutAsync(alles);
         }
 
-        public async void addPhrase(Phrase phrase)
+        public async void phraseHinzufügen(Phrase phrase)
         {
-            List<Phrase> all = await getAllWords();
-            await firebaseClient.Child("phrases").Child(all.Count.ToString()).PutAsync(new {word =  phrase.word, category =  phrase.category});
+            List<Phrase> alles = await getAllePhrasen();
+            alles.Add(phrase);
+            await firebaseClient.Child("phrases").PutAsync(alles);
         }
         
-        public async Task<bool> checkLogin(string name, string passwort)
+        public async Task<bool> loginÜberprüfung(string name, string passwort)
         {
             var data = await firebaseClient.Child("admin").OnceAsync<string>();
 
